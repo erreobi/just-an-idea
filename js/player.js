@@ -1,3 +1,6 @@
+import { checkCollition } from './utils.js'
+
+
 export class Player {
     constructor(game) {
         this.game = game;
@@ -59,6 +62,18 @@ export class Player {
             this.collisionX += speedX * this.speedFactor;
             this.collisionY += speedY * this.speedFactor;
         }
+
+        this.game.obastacles.forEach(obstacle => {
+            let [collision, distance, sumofRadii, dx, dy] = checkCollition(this, obstacle);
+            if (collision)
+            {
+                let directionX = dx/distance;
+                let directionY = dy/distance;   
+                this.collisionX = obstacle.collisionX + (sumofRadii+1) * directionX;
+                this.collisionY = obstacle.collisionY + (sumofRadii+1) * directionY;
+            }
+        });
+
 
     }
 }

@@ -25,11 +25,13 @@ export class Game {
     }
 
     init(){
+        const topMargin = 260;
 
         for (let index = 0, limit = 500; index < this.numberOfObstacles && limit >= 0; limit--) {
                     
             const newObstacle = new Obstacle(this);
             let founsCollisions = false;
+            
 
             // COLLITION DETECTION
             this.obastacles.every(obstacle => {
@@ -37,8 +39,10 @@ export class Game {
                 const dx = obstacle.collisionX - newObstacle.collisionX;
                 const dy = obstacle.collisionY - newObstacle.collisionY; 
                 const distance = Math.hypot(dx,dy);
+                const distBufferPx = 150;
+                const collisionDistance = obstacle.collisionRadius+newObstacle.collisionRadius+distBufferPx;
 
-                if (distance < (obstacle.collisionRadius+newObstacle.collisionRadius))
+                if (distance < collisionDistance)
                 {
                     founsCollisions = true;
                     return false
@@ -47,7 +51,11 @@ export class Game {
                 return true;
             });
 
-            if (!founsCollisions)
+            const margin = newObstacle.collisionRadius * 2;
+            const testXPosition = newObstacle.spriteX > 0 && newObstacle.spriteX < (this.width - newObstacle.spriteWidth);
+            const testYPosition = newObstacle.collisionY > (topMargin+margin) && newObstacle.collisionY < (this.height - margin);
+
+            if (!founsCollisions && testXPosition && testYPosition)
             {
                 this.obastacles.push(newObstacle);
                 index++
@@ -58,10 +66,12 @@ export class Game {
     }
 
     render(context) {
+        
+        this.obastacles.forEach(obstacle => obstacle.draw(context));
+        
         this.player.draw(context);
         this.player.update();
 
-        this.obastacles.forEach(obstacle => obstacle.draw(context));
     }
 
     eventHandlers(){
