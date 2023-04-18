@@ -73,8 +73,6 @@ export class Player {
                 this.collisionY = obstacle.collisionY + (sumofRadii+1) * directionY;
             }
         });
-
-
     }
 }
 
