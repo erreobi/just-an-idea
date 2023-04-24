@@ -10,10 +10,36 @@ export class Player {
 
         this.speedFactor = 10;
 
+        this.img = new Image();
+        this.img.src = "style/images/bull.png";
+
+        this.spriteHeight = 255;
+        this.spriteWidth = 255;
+        this.scale = 1;
+        this.width = this.spriteWidth*this.scale;
+        this.height = this.spriteHeight*this.scale;
+
+        this.spriteFrameX = 0;
+        this.spriteFrameY = 4;
+
 
     }
 
     draw(context) {
+
+        context.drawImage(this.img, 
+            
+            this.spriteFrameX * this.spriteWidth, 
+            this.spriteFrameY * this.spriteHeight, 
+            
+            this.spriteWidth, 
+            this.spriteHeight,  
+            
+            this.spriteX, 
+            this.spriteY,
+            
+            this.width, 
+            this.height);
 
         //Disegna il cerchio
         context.beginPath();
@@ -53,6 +79,19 @@ export class Player {
         }
 
         //console.log(dX, dY, this.speedFactor,(dX < this.speedFactor),(dY < this.speedFactor));
+        //Posisiton of the sprite respectful to the collision areas
+        this.spriteX = this.collisionX - this.spriteWidth * 0.5;
+        this.spriteY = this.collisionY - this.spriteHeight * 0.5 - this.collisionRadius;
+        const angle = Math.atan2(dY,dX);
+        console.log(angle);
+        if (angle < - 1.17) {this.spriteFrameY = 0; }
+        else if (angle < - 0.39 ){this.spriteFrameY = 1; }
+        else if (angle < 0.39 ){this.spriteFrameY = 2; }
+        else if (angle < 1.17 ){this.spriteFrameY = 3; }
+        else if (angle < 1.95 ){this.spriteFrameY = 4; }
+        else if (angle < 2.73 ){this.spriteFrameY = 5; }
+        else if (angle < 2.73 || angle > 2.74 ){this.spriteFrameY = 6; }
+        else if (angle < - 1.96 ){this.spriteFrameY = 7; }
 
         if (dX != 0 && dY != 0) {
 
