@@ -8,6 +8,7 @@ export class Game {
         this.canvas = canvas;
         this.width = this.canvas.width;
         this.height = this.canvas.height;
+        this.topMargin = 260;
         
         // Mouse Events
         this.mouse = {
@@ -21,11 +22,13 @@ export class Game {
         this.player = new Player(this);
         this.obastacles = [];
         this.numberOfObstacles = 20;
+
+        this.debug = true;
         
     }
 
     init(){
-        const topMargin = 260;
+        
 
         for (let index = 0, limit = 500; index < this.numberOfObstacles && limit >= 0; limit--) {
                     
@@ -53,7 +56,7 @@ export class Game {
 
             const margin = newObstacle.collisionRadius * 2;
             const testXPosition = newObstacle.spriteX > 0 && newObstacle.spriteX < (this.width - newObstacle.spriteWidth);
-            const testYPosition = newObstacle.collisionY > (topMargin+margin) && newObstacle.collisionY < (this.height - margin);
+            const testYPosition = newObstacle.collisionY > ( this.topMargin+margin) && newObstacle.collisionY < (this.height - margin);
 
             if (!founsCollisions && testXPosition && testYPosition)
             {
@@ -95,6 +98,10 @@ export class Game {
                 this.mouse.y = e.offsetY;
             }
             //console.log(this.mouse)
+        });
+
+        window.addEventListener( 'keydown', e => {
+            if (e.key == 'd') this.debug = ! this.debug;
         });
 
         // this.canvas.addEventListener('wheel', e => {

@@ -27,46 +27,46 @@ export class Player {
 
     draw(context) {
 
-        context.drawImage(this.img, 
-            
+        context.drawImage(this.img,
             this.spriteFrameX * this.spriteWidth, 
-            this.spriteFrameY * this.spriteHeight, 
-            
+            this.spriteFrameY * this.spriteHeight,
             this.spriteWidth, 
-            this.spriteHeight,  
-            
+            this.spriteHeight,
             this.spriteX, 
             this.spriteY,
-            
             this.width, 
             this.height);
 
-        //Disegna il cerchio
-        context.beginPath();
-        context.arc(this.collisionX, this.collisionY, this.collisionRadius, 0, Math.PI * 2);
-        context.save();
-        context.globalAlpha = 0.5;
-        context.fill();
-        context.restore();
-        context.stroke();
-
-        // Disegna la linea per la direzione
-        if (this.game.mouse.pressed) {
+        if (this.game.debug)
+        {
+            //Disegna il cerchio
+            context.beginPath();
+            context.arc(this.collisionX, this.collisionY, this.collisionRadius, 0, Math.PI * 2);
             context.save();
-            context.lineWitdh = 10;
-            context.strokeStyle = 'red';
-        }
-        context.beginPath();
-        context.moveTo(this.collisionX, this.collisionY);
-        context.lineTo(this.game.mouse.x, this.game.mouse.y);
-        context.stroke();
-        if (this.game.mouse.pressed) {
+            context.globalAlpha = 0.5;
+            context.fill();
             context.restore();
+            context.stroke();
+
+            // Disegna la linea per la direzione
+            if (this.game.mouse.pressed) {
+                context.save();
+                context.lineWitdh = 10;
+                context.strokeStyle = 'red';
+            }
+            context.beginPath();
+            context.moveTo(this.collisionX, this.collisionY);
+            context.lineTo(this.game.mouse.x, this.game.mouse.y);
+            context.stroke();
+            if (this.game.mouse.pressed) {
+                context.restore();
+            }
         }
 
     }
 
     update() {
+
         let dX = this.game.mouse.x - this.collisionX;
         let dY = this.game.mouse.y - this.collisionY; 
         const distance = Math.hypot(dX, dY);
@@ -82,8 +82,10 @@ export class Player {
         //Posisiton of the sprite respectful to the collision areas
         this.spriteX = this.collisionX - this.spriteWidth * 0.5;
         this.spriteY = this.collisionY - this.spriteHeight * 0.5 - this.collisionRadius;
+
+        //Sprites
         const angle = Math.atan2(dY,dX);
-        console.log(angle);
+        // console.log(angle);
         if (angle < - 1.17) {this.spriteFrameY = 0; }
         else if (angle < - 0.39 ){this.spriteFrameY = 1; }
         else if (angle < 0.39 ){this.spriteFrameY = 2; }
@@ -93,6 +95,7 @@ export class Player {
         else if (angle < 2.73 || angle > 2.74 ){this.spriteFrameY = 6; }
         else if (angle < - 1.96 ){this.spriteFrameY = 7; }
 
+        // Speed check
         if (dX != 0 && dY != 0) {
 
             const speedX = dX / distance || 0;
@@ -100,8 +103,27 @@ export class Player {
 
             this.collisionX += speedX * this.speedFactor;
             this.collisionY += speedY * this.speedFactor;
+
+            
+
         }
 
+        //check if the prites is on the broder
+        if (this.collisionX < this.collisionRadius) { 
+            this.collisionX = this.collisionRadius;
+        }
+        else if (this.collisionX > (this.game.width - this.collisionRadius)) {
+            this.collisionX = this.game.width - this.collisionRadius;
+        }
+        if (this.collisionY <  this.game.topMargin+this.collisionRadius) { 
+            this.collisionY = this.game.topMargin+this.collisionRadius;
+        }
+        else if (this.collisionY > (this.game.height - this.collisionRadius)) {
+            this.collisionY = this.game.height - this.collisionRadius;
+        }
+        console.log(this.collisionX, this.collisionY);
+
+        //Check collisions
         this.game.obastacles.forEach(obstacle => {
             let [collision, distance, sumofRadii, dx, dy] = checkCollition(this, obstacle);
             if (collision)
