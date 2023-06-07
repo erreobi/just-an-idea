@@ -1,5 +1,6 @@
 import { Player } from './player.js'
 import { Obstacle } from './obstacle.js'
+import { Egg } from './egg.js'
 
 // it will manager the game logic and dynamics
 export class Game {
@@ -19,23 +20,46 @@ export class Game {
         this.eventHandlers();
 
         // Games elements
+        //Players
         this.player = new Player(this);
+        //Obstacles
         this.obastacles = [];
         this.numberOfObstacles = 20;
+        //Eggs
+        this.eggs = [];
+        this.numberOfEggs = 100;
+        this.eggTimer = 0;
+        this.eggInterval = 100; //millisecond
 
+
+        //Debug Version
         this.debug = true;
         
+        //Controlling the FPS
+        this.fps = 60; // it is the default value for most of the screens
+        this.interval = 1000/this.fps;
+        this.timer = 0;
+
+    }
+
+    addEgg()
+    {
+        const egg = new Egg(this);
+    
+        this.eggs.push(egg);
     }
 
     init(){
-        
 
+        // add the obstacles in the game. 
+        // - They obstacle should be in a specific position of the canvas.
+        // - They should not collide.
+        // - They should have enough space each other.
         for (let index = 0, limit = 500; index < this.numberOfObstacles && limit >= 0; limit--) {
                     
             const newObstacle = new Obstacle(this);
             let founsCollisions = false;
             
-
             // COLLITION DETECTION
             this.obastacles.every(obstacle => {
 
@@ -68,12 +92,33 @@ export class Game {
 
     }
 
-    render(context) {
-        
-        this.obastacles.forEach(obstacle => obstacle.draw(context));
-        
-        this.player.draw(context);
-        this.player.update();
+    render(context, deltaTime) {
+       // console.log(deltaTime, this.timer, this.interval);
+        if (this.timer > this.interval)
+        {
+            context.clearRect(0, 0, this.width, this.height);
+
+            this.obastacles.forEach(obstacle => obstacle.draw(context));
+            
+            this.player.draw(context);
+            this.player.update();
+            this.timer = 0;
+
+            this.eggs.forEach(egg => egg.draw(context));
+
+        }
+        this.timer += deltaTime; 
+
+        //Add an egg each interval
+        if (this.eggs.length <= this.numberOfEggs)
+        {
+            if  (this.eggTimer > this.eggInterval){
+                this.addEgg();
+                this.eggTimer = 0;
+            } else{
+                this.eggTimer += deltaTime;
+            }
+        }
 
     }
 

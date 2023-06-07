@@ -16,11 +16,14 @@ window.addEventListener('load', function (ev/*: Event*/) {
     console.log(game);
 
     //Animation Loop
-    function animate() {
-        ctx.clearRect(0, 0, game.width, game.height);
-        game.render(ctx);
+    let lastTime = 0
+    function animate(timestamp) {
+        const deltaTime = timestamp - lastTime;
+        lastTime = timestamp;
+        // console.log(deltaTime);
+        game.render(ctx,deltaTime);
         requestAnimationFrame(animate);
     }
 
-    animate();
+    animate(0);
 })

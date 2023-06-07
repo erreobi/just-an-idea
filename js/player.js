@@ -6,15 +6,15 @@ export class Player {
         this.game = game;
         this.collisionX = game.width * 0.5;
         this.collisionY = game.height * 0.5;
-        this.collisionRadius = 50;
+        this.collisionRadius = 40;
 
         this.speedFactor = 10;
 
         this.img = new Image();
         this.img.src = "style/images/bull.png";
 
-        this.spriteHeight = 255;
-        this.spriteWidth = 255;
+        this.spriteHeight = 256;
+        this.spriteWidth = 256;
         this.scale = 1;
         this.width = this.spriteWidth*this.scale;
         this.height = this.spriteHeight*this.scale;
@@ -81,7 +81,7 @@ export class Player {
         //console.log(dX, dY, this.speedFactor,(dX < this.speedFactor),(dY < this.speedFactor));
         //Posisiton of the sprite respectful to the collision areas
         this.spriteX = this.collisionX - this.spriteWidth * 0.5;
-        this.spriteY = this.collisionY - this.spriteHeight * 0.5 - this.collisionRadius;
+        this.spriteY = this.collisionY - this.spriteHeight * 0.5 - this.collisionRadius-60;
 
         //Sprites
         const angle = Math.atan2(dY,dX);
@@ -103,9 +103,6 @@ export class Player {
 
             this.collisionX += speedX * this.speedFactor;
             this.collisionY += speedY * this.speedFactor;
-
-            
-
         }
 
         //check if the prites is on the broder
@@ -121,7 +118,7 @@ export class Player {
         else if (this.collisionY > (this.game.height - this.collisionRadius)) {
             this.collisionY = this.game.height - this.collisionRadius;
         }
-        console.log(this.collisionX, this.collisionY);
+        //console.log(this.collisionX, this.collisionY);
 
         //Check collisions
         this.game.obastacles.forEach(obstacle => {

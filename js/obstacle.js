@@ -3,7 +3,7 @@ export class Obstacle {
         this.game = game;
         this.collisionX = game.width * Math.random();
         this.collisionY = game.height * Math.random();
-        this.collisionRadius = 40;
+        this.collisionRadius = 50;
 
         this.speedFactor = 10;
 
@@ -19,9 +19,9 @@ export class Obstacle {
 
         //Posisiton of the sprite respectful to the collision areas
         this.spriteX = this.collisionX - this.spriteWidth * 0.5;
-        this.spriteY = this.collisionY - this.spriteHeight * 0.5 - this.collisionRadius;
+        this.spriteY = this.collisionY - this.spriteHeight * 0.5 - this.collisionRadius-10;
 
-        this.spriteFrameX= Math.floor(Math.random() * 4);
+        this.spriteFrameX= Math.floor(Math.random() * 4)
         this.spriteFrameY= Math.floor(Math.random() * 3);
 
     }
