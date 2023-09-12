@@ -1,3 +1,5 @@
+import { checkCollition } from './utils.js'
+
 export class Egg {
     constructor(game) {
         this.game = game;
@@ -18,13 +20,12 @@ export class Egg {
         this.scale = 1;
         this.width = this.spriteWidth*this.scale;
         this.height = this.spriteHeight*this.scale;
-
-        this.spriteX = this.collisionX - this.spriteWidth * 0.5;
-        this.spriteY = this.collisionY - this.spriteHeight * 0.5 - this.collisionRadius;
-
     }
 
     draw(context) {
+        this.spriteX = this.collisionX - this.spriteWidth * 0.5;
+        this.spriteY = this.collisionY - this.spriteHeight * 0.5 - this.collisionRadius;
+
         context.drawImage(this.img, 
             this.spriteX, 
             this.spriteY,    
@@ -47,6 +48,22 @@ export class Egg {
 
     update() {
        
+        let gameObjects = [this.game.player, ...this.game.obastacles];
+
+        gameObjects.forEach(object => {
+
+            let [collision, distance, sumofRadii, dx, dy] = checkCollition(this, object);
+            if (collision)
+            {
+                let directionX = dx/distance;
+                let directionY = dy/distance;   
+                this.collisionX = object.collisionX + (sumofRadii+1) * directionX;
+                this.collisionY = object.collisionY + (sumofRadii+1) * directionY;
+            }
+
+        });
+
+
     }
 }
 

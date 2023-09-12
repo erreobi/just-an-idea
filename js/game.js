@@ -27,9 +27,9 @@ export class Game {
         this.numberOfObstacles = 20;
         //Eggs
         this.eggs = [];
-        this.numberOfEggs = 100;
+        this.numberOfEggs = 10;
         this.eggTimer = 0;
-        this.eggInterval = 100; //millisecond
+        this.eggInterval = 500; //millisecond
 
 
         //Debug Version
@@ -98,15 +98,20 @@ export class Game {
         {
             context.clearRect(0, 0, this.width, this.height);
 
-            this.obastacles.forEach(obstacle => obstacle.draw(context));
-            
-            this.player.draw(context);
-            this.player.update();
+            //the obectjs create as a last will be always visible. 
+            let objects = [...this.eggs, ...this.obastacles, this.player];
+
+            //sorting the distances to have an 3d effect
+            objects.sort((a,b)=>{return a.collisionY-b.collisionY});
+
+            objects.forEach(object => {
+                object.draw(context)
+                object.update(context);
+            });
+
             this.timer = 0;
-
-            this.eggs.forEach(egg => egg.draw(context));
-
         }
+
         this.timer += deltaTime; 
 
         //Add an egg each interval
