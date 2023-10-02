@@ -48,7 +48,7 @@ export class Egg {
 
     update() {
        
-        let gameObjects = [this.game.player, ...this.game.obastacles];
+        let gameObjects = [this.game.player, ...this.game.obastacles, , ...this.game.monsters];
 
         gameObjects.forEach(object => {
 

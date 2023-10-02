@@ -1,6 +1,7 @@
 import { Player } from './player.js'
 import { Obstacle } from './obstacle.js'
 import { Egg } from './egg.js'
+import { Monster } from './monster.js'
 
 // it will manager the game logic and dynamics
 export class Game {
@@ -31,6 +32,10 @@ export class Game {
         this.eggTimer = 0;
         this.eggInterval = 500; //millisecond
 
+        this.monsters = [];
+        this.numberOfMonsters = 50;
+        this.monsterTime = 0;
+        this.monsterInterval = 500;
 
         //Debug Version
         this.debug = true;
@@ -48,6 +53,14 @@ export class Game {
     
         this.eggs.push(egg);
     }
+
+    addMonster()
+    {
+        const monster = new Monster(this);
+    
+        this.monsters.push(monster);
+    }
+
 
     init(){
 
@@ -99,8 +112,8 @@ export class Game {
             context.clearRect(0, 0, this.width, this.height);
 
             //the obectjs create as a last will be always visible. 
-            let objects = [...this.eggs, ...this.obastacles, this.player];
-
+            let objects = [...this.eggs, ...this.obastacles, ...this.monsters, this.player];
+        
             //sorting the distances to have an 3d effect
             objects.sort((a,b)=>{return a.collisionY-b.collisionY});
 
@@ -122,6 +135,17 @@ export class Game {
                 this.eggTimer = 0;
             } else{
                 this.eggTimer += deltaTime;
+            }
+        }
+        //Add an monster each interval
+        if (this.monsters.length < this.numberOfMonsters)
+        {
+            console.log("this.monsters.length: "+this.monsters.length);
+            if  (this.monsterTime > this.monsterInterval){
+                this.addMonster();
+                this.monsterTime = 0;
+            } else{
+                this.monsterTime += deltaTime;
             }
         }
 

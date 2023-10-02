@@ -81,7 +81,7 @@ export class Player {
         //console.log(dX, dY, this.speedFactor,(dX < this.speedFactor),(dY < this.speedFactor));
         //Posisiton of the sprite respectful to the collision areas
         this.spriteX = this.collisionX - this.spriteWidth * 0.5;
-        this.spriteY = this.collisionY - this.spriteHeight * 0.5 - this.collisionRadius-60;
+        this.spriteY = this.collisionY - this.spriteHeight * 0.5 - this.collisionRadius-40;
 
         //Sprites
         const angle = Math.atan2(dY,dX);
@@ -115,10 +115,11 @@ export class Player {
         if (this.collisionY <  this.game.topMargin+this.collisionRadius) { 
             this.collisionY = this.game.topMargin+this.collisionRadius;
         }
-        else if (this.collisionY > (this.game.height - this.collisionRadius)) {
-            this.collisionY = this.game.height - this.collisionRadius;
+        else if (this.collisionY > (this.game.height - (this.collisionRadius/2))) {
+            this.collisionY = this.game.height - (this.collisionRadius/2);
+            // console.log("height: "+this.game.height, "collisionRadius: "+this.collisionRadius);
         }
-        //console.log(this.collisionX, this.collisionY);
+        // console.log("x: "+this.collisionX, "y: "+this.collisionY);
 
         //Check collisions
         this.game.obastacles.forEach(obstacle => {

@@ -23,10 +23,11 @@ export class Obstacle {
 
         this.spriteFrameX= Math.floor(Math.random() * 4)
         this.spriteFrameY= Math.floor(Math.random() * 3);
-
+        
     }
 
     draw(context) {
+
         context.drawImage(this.img, 
             this.spriteFrameX * this.spriteWidth, 
             this.spriteFrameY * this.spriteHeight,    
