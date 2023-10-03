@@ -10,6 +10,7 @@ window.addEventListener('load', function (ev/*: Event*/) {
     ctx.fillStyle = 'white';
     ctx.lineWitdh = 3;
     ctx.strokeStyle = 'white';
+    ctx.font = '40px Helvetica';
 
     const game = new Game(canvas);
     game.init();

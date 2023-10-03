@@ -11,7 +11,7 @@ export class Monster {
         this.speedFactor = Math.random()*3 + 2;
 
         this.img = new Image();
-        this.img.src = "style/images/toad.png";
+        this.img.src = "style/images/toads.png";
 
         this.spriteHeight = 260;
         this.spriteWidth = 140;
@@ -22,11 +22,14 @@ export class Monster {
         //Posisiton of the sprite respectful to the collision areas
 
         this.spriteFrameX= 0;
-        this.spriteFrameY= 0;
+        this.spriteFrameY= Math.floor(Math.random() * 4);
 
     }
 
     draw(context) {
+
+        this.spriteX = this.collisionX - this.spriteWidth * 0.5;
+        this.spriteY = this.collisionY - this.spriteHeight * 0.5 - 60;
 
         context.drawImage(this.img,
             this.spriteFrameX * this.spriteWidth, 
@@ -54,14 +57,15 @@ export class Monster {
 
     update(context) {
 
-        this.spriteX = this.collisionX - this.spriteWidth * 0.5;
-        this.spriteY = this.collisionY - this.spriteHeight * 0.5 - 60;
-
-        if (this.collisionX <= 0)
+        if (this.collisionX <= 0 && !this.game.gameOver)
         {
             //IT will restart for another random position. We could recreate them but it wouldn't be efficient. 
             this.collisionX = this.game.width;
             this.collisionY = this.game.topMargin+(this.game.height-this.game.topMargin)*Math.random();
+            
+            //with another skin
+            this.spriteFrameY= Math.floor(Math.random() * 4);
+
         }
         this.collisionX -= 1 * this.speedFactor;
 
@@ -79,9 +83,6 @@ export class Monster {
                 this.collisionY = object.collisionY + (sumofRadii+1) * directionY;
             }
         });
-
-
-
 
     }
 }

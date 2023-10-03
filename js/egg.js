@@ -20,6 +20,12 @@ export class Egg {
         this.scale = 1;
         this.width = this.spriteWidth*this.scale;
         this.height = this.spriteHeight*this.scale;
+
+        //Hatching Logic
+        this.hatchTimer = 0;
+        this.hatchInterval = 5000;
+        this.markForRemoval = false;
+        
     }
 
     draw(context) {
@@ -42,14 +48,18 @@ export class Egg {
             context.fill();
             context.restore();
             context.stroke();
+            context.fillText(Math.floor(this.hatchTimer*0.001),this.collisionX, this.collisionY-this.spriteHeight * 0.5 - this.collisionRadius);
         }
 
     }
 
-    update() {
-       
-        let gameObjects = [this.game.player, ...this.game.obastacles, , ...this.game.monsters];
+    update(context, deltaTime) {
 
+        //console.log("deltaTime"+deltaTime);
+       
+        let gameObjects = [this.game.player, ...this.game.obastacles, ...this.game.monsters];
+
+        // collision
         gameObjects.forEach(object => {
 
             let [collision, distance, sumofRadii, dx, dy] = checkCollition(this, object);
@@ -63,6 +73,15 @@ export class Egg {
 
         });
 
+        //Hatching
+        if (this.hatchTimer > this.hatchInterval ){
+            this.markForRemoval = true;
+            this.game.removeObjects();
+            this.game.addLarva(this.collisionX, this.collisionY);
+            this.hatchTimer = 0;
+        }else{
+            this.hatchTimer += deltaTime;
+        }
 
     }
 }

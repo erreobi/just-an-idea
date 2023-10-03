@@ -13,8 +13,8 @@ export class Player {
         this.img = new Image();
         this.img.src = "style/images/bull.png";
 
-        this.spriteHeight = 256;
-        this.spriteWidth = 256;
+        this.spriteHeight = 255;
+        this.spriteWidth = 255;
         this.scale = 1;
         this.width = this.spriteWidth*this.scale;
         this.height = this.spriteHeight*this.scale;
@@ -22,10 +22,28 @@ export class Player {
         this.spriteFrameX = 0;
         this.spriteFrameY = 4;
 
+        this.bounchTime = 0;
+        this.bounchInterval = 1;
+
 
     }
 
+    restart(){
+        this.collisionX = this.game.width * 0.5;
+        this.collisionY = this.game.height * 0.5;
+        this.spriteFrameX = 0;
+        this.spriteFrameY = 4
+        this.spriteX = this.collisionX - this.spriteWidth * 0.5;
+        this.spriteY = this.collisionY - this.spriteHeight * 0.5 - this.collisionRadius-40;
+    }
+
     draw(context) {
+        // console.log(this.spriteFrameX, this.spriteFrameY);
+
+         //console.log(dX, dY, this.speedFactor,(dX < this.speedFactor),(dY < this.speedFactor));
+        //Posisiton of the sprite respectful to the collision areas
+        this.spriteX = this.collisionX - this.spriteWidth * 0.5;
+        this.spriteY = this.collisionY - this.spriteHeight * 0.5 - this.collisionRadius-40;
 
         context.drawImage(this.img,
             this.spriteFrameX * this.spriteWidth, 
@@ -65,7 +83,7 @@ export class Player {
 
     }
 
-    update() {
+    update(context, deltaTime) {
 
         let dX = this.game.mouse.x - this.collisionX;
         let dY = this.game.mouse.y - this.collisionY; 
@@ -77,11 +95,6 @@ export class Player {
             this.collisionY = this.game.mouse.y;
             dY = 0;
         }
-
-        //console.log(dX, dY, this.speedFactor,(dX < this.speedFactor),(dY < this.speedFactor));
-        //Posisiton of the sprite respectful to the collision areas
-        this.spriteX = this.collisionX - this.spriteWidth * 0.5;
-        this.spriteY = this.collisionY - this.spriteHeight * 0.5 - this.collisionRadius-40;
 
         //Sprites
         const angle = Math.atan2(dY,dX);
@@ -132,6 +145,15 @@ export class Player {
                 this.collisionY = obstacle.collisionY + (sumofRadii+1) * directionY;
             }
         });
+
+        if (this.bounchTime > this.bounchInterval)
+        {
+            this.spriteFrameX = (this.spriteFrameX + 3) % 59;
+            this.bounchTime = 0;
+        }else{
+            this.bounchTime += deltaTime;
+        }
+        
     }
 }
 
