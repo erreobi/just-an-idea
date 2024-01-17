@@ -1,7 +1,8 @@
 # just-an-idea
 My implementation of an animation ... my personal portal ... my fun
 
-Thanks to https://www.youtube.com/watch?v=U34l-Xz5ynU&t=8801s
+Thanks to https://www.youtube.com/watch?v=U34l-Xz5ynU&t=8801s for the 2d javascript games introduction. 
+Thanks to https://www.youtube.com/watch?v=aaZYuQPf5hM for the Inkscape 2d character creation. 
 
 # Useful Sites
 - [Portal with the list of icons](https://www.iconfinder.com/search?q=Mario)
