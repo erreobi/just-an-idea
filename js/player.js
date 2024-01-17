@@ -35,6 +35,7 @@ export class Player {
         this.spriteFrameY = 4
         this.spriteX = this.collisionX - this.spriteWidth * 0.5;
         this.spriteY = this.collisionY - this.spriteHeight * 0.5 - this.collisionRadius-40;
+        
     }
 
     draw(context) {
