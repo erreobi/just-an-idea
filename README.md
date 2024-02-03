@@ -14,5 +14,7 @@ Thanks to https://www.youtube.com/watch?v=aaZYuQPf5hM for the Inkscape 2d charac
 - [Sprite Tool Animator](https://dragonbones.github.io/en/index.html)
     - https://www.synfig.org/ 
     - https://animeeffectsdevs.github.io/
+    - 
+- [drawing 2d scenario](https://80.lv/articles/build-2d-game-levels-by-drawing-tiles-with-this-free-web-based-editor/?ref=dailydev)
 
 
